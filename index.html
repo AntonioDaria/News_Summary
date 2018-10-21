@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>World's news</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div id="app">
-      <p>Hello</p>
-    </div>
-  </body>
-</html>
+<html>
+<body>
+ <h1>World's news</h1>
+<h2>Headlines</h2>
+ <button type="button" onclick="loadDoc()">See News</button>
+ <p id="app"></p>
+
+ <script>
+ function loadDoc() {
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+      document.getElementById("app").innerHTML = this.responseText;
+      var Obj = JSON.parse(this.responseText);
+      var array = Obj.response.results
+      document.getElementById("app").innerHTML = array.map(item => item.webTitle).join("<p>");
+   };
+
+  request.open("GET", "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/politics/2018/oct/20/nicola-sturgeon-quits-bbc-event-over-steve-bannon-invitation?show-fields=body", true);
+  request.open("GET", "https://content.guardianapis.com/search?from-date=2018-10-21&api-key=fd20389a-3579-469a-89c4-6d1f42095624", true);
+  request.send();
+ }
+ </script>
+
+ </body>
+ </html>
